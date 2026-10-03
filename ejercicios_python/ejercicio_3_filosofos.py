@@ -55,23 +55,20 @@ def filosofo(id, rondas=3):
     """
     for _ in range(rondas):
         pensar(id)
-        
-        # Identificadores de los tenedores adyacentes
+
         tenedor_izq = id
         tenedor_der = (id + 1) % NUM_FILOSOFOS
-        
-        # =========================================================================
-        # INICIO TODO: Implementar adquisición y liberación segura de tenedores
-        # =========================================================================
-        # PISTA: Implementa la solución asimétrica de Dijkstra (romper Espera Circular)
-        # o utiliza un semáforo árbitro para evitar el interbloqueo (Deadlock).
-        #
-        # TODO: Adquiere los tenedores adyacentes de forma segura, invoca comer(id)
-        # y libera los tenedores:
-        pass
-        # =========================================================================
-        # FIN TODO
-        # =========================================================================
+
+        if id == NUM_FILOSOFOS - 1:
+            primero = tenedor_der
+            segundo = tenedor_izq
+        else:
+            primero = tenedor_izq
+            segundo = tenedor_der
+
+        with tenedores[primero]:
+            with tenedores[segundo]:
+                comer(id)
 
 if __name__ == "__main__":
     print("=" * 60)
